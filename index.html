@@ -1,258 +1,208 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Seni Seviyorum Mervem</title>
-  <style>
-    :root{--bg:#0f1226;--accent:#ff6b9a;--text:#f3f4f8}
-    *{box-sizing:border-box}
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      overflow: auto;
-      padding: 20px 0;
-    }
-
-    .card {
-      width: min(100%, 95%);
-      max-width: 900px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius: 18px;
-      padding: 36px 20px;
-      position: relative;
-      overflow: visible;
-      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
-      border: 1px solid rgba(255,255,255,0.03);
-      margin-top: 20px;
-    }
-
-    h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text-align:center}
-    .subtitle{color:rgba(243,244,248,0.8);margin-bottom:18px; text-align:center}
-
-    .text{line-height:1.7;font-size:18px;color:rgba(243,244,248,0.95); text-align:center}
-    .text p{margin:0 0 14px}
-    .final-message{font-size:48px; color:var(--accent); font-weight:800; text-align:center; display:none; margin-top:50px}
-
-    #playContainer{margin-bottom:20px; text-align:center}
-    #playButton{font-size:32px; padding:15px 30px; border-radius:15px; cursor:pointer; background:var(--accent); color:white; border:none; box-shadow:0 6px 16px rgba(255,107,154,0.5)}
-    #playNote{margin-top:10px; font-size:18px; color:#ccc}
-
-    #loveFinalBtn{font-size:28px; padding:12px 28px; border-radius:12px; cursor:pointer; background:#ff4c7a; color:white; border:none; box-shadow:0 6px 16px rgba(255,76,122,0.5); margin-top:20px}
-
-    .hearts, .fireworks{position:absolute; inset:0; pointer-events:none}
-
-    .heart{position:absolute;width:36px;height:36px;transform-origin:center center; opacity:0;}
-    .heart:before,.heart:after{content:'';position:absolute;width:36px;height:36px;border-radius:18px;background:var(--accent);}
-    .heart:before{transform:translateX(-12px);}
-    .heart:after{transform:translateX(12px)}
-    .heart i{position:absolute;left:0;top:6px;width:36px;height:36px;background:var(--accent);transform:rotate(45deg);border-radius:8px}
-
-    @keyframes floatUp {0%{transform:translateY(0) scale(0.8);opacity:0}10%{opacity:1}100%{transform:translateY(-400px) scale(1.5);opacity:0}}
-
-    @media (max-width:520px){
-      .card{padding:20px}
-      .text{font-size:14px}
-      h1{font-size:22px}
-      #loveFinalBtn{font-size:22px;padding:10px 20px}
-      #playButton{font-size:28px;padding:12px 25px}
-      #playNote{font-size:16px}
-    }
-
-    /* --- EKLEMELER --- */
-
-    /* Arka plan yıldızlı efekt */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 70%),
-                  radial-gradient(circle at bottom, rgba(255,255,255,0.03), transparent 70%);
-      background-size: 200% 200%;
-      animation: bgMove 20s infinite alternate;
-      z-index: -1;
-    }
-    @keyframes bgMove {
-      from { background-position: 0 0; }
-      to { background-position: 100% 100%; }
-    }
-
-    /* Typing animasyonu */
-    .typing {
-      display: inline-block;
-      border-right: 3px solid var(--accent);
-      white-space: nowrap;
-      overflow: hidden;
-      animation: typing 4s steps(40, end), blink .75s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink {
-      from, to { border-color: transparent }
-      50% { border-color: var(--accent) }
-    }
-
-    /* Sonsuza kadar mesajı */
-    .forever-message {
-      font-size: 36px;
-      font-weight: bold;
-      color: #ff99cc;
-      text-align: center;
-      display: none;
-      margin-top: 20px;
-      animation: popIn 1s ease forwards;
-    }
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* Havai fişek parçacıkları */
-    .particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ff4c7a;
-      opacity: 0;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Seni Seviyorum Mervem</title>
+<style>
+:root{--bg:#0f1226;--accent:#ff6b9a;--text:#f3f4f8}
+*{box-sizing:border-box}
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 20px 0;
+  position: relative;
+}
+body::before {
+  content:"";
+  position: fixed;
+  inset:0;
+  background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+  opacity:0.15;
+  animation: twinkle 8s infinite alternate;
+  z-index: -3;
+}
+@keyframes twinkle {0% {opacity:0.08;} 100% {opacity:0.25;}}
+.card {
+  width: min(100%, 95%);
+  max-width: 900px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 18px;
+  padding: 36px 20px;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+  margin-top: 20px;
+  z-index:1;
+}
+h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text-align:center}
+.text{line-height:1.7;font-size:18px;color:rgba(243,244,248,0.95); text-align:center}
+.text p{margin:0 0 14px}
+.final-message{
+  font-size:52px;
+  color:var(--accent);
+  font-weight:800;
+  text-align:center;
+  display:none;
+  margin-top:50px;
+  white-space:pre-wrap;
+  text-shadow:0 0 5px #ff6b9a,0 0 10px #ff6b9a,0 0 15px #ff6b9a;
+  animation: glow 1.5s ease-in-out infinite alternate;
+  position: relative;
+  z-index:2;
+}
+@keyframes glow {0% {text-shadow:0 0 5px #ff6b9a,0 0 10px #ff6b9a,0 0 15px #ff6b9a;} 100% {text-shadow:0 0 20px #ff6b9a,0 0 35px #ff87c0,0 0 50px #ffd700;}}
+#playContainer{margin-bottom:20px; text-align:center; z-index:1;}
+#playButton{font-size:32px; padding:15px 30px; border-radius:15px; cursor:pointer; background:var(--accent); color:white; border:none; box-shadow:0 6px 16px rgba(255,107,154,0.5)}
+#playNote{margin-top:10px; font-size:18px; color:#ccc}
+#loveFinalBtn{font-size:28px; padding:12px 28px; border-radius:12px; cursor:pointer; background:#ff4c7a; color:white; border:none; box-shadow:0 6px 16px rgba(255,76,122,0.5); margin-top:20px}
+.hearts, .fireworks, .smoke, .star {position:absolute; inset:0; pointer-events:none; z-index:0;}
+.heart{position:absolute;width:36px;height:36px;transform-origin:center center; opacity:0;}
+.heart:before,.heart:after{content:'';position:absolute;width:36px;height:36px;border-radius:18px;}
+.heart:before{transform:translateX(-12px);}
+.heart:after{transform:translateX(12px);}
+.heart i{position:absolute;left:0;top:6px;width:36px;height:36px;background:var(--accent);transform:rotate(45deg);border-radius:8px}
+@keyframes floatUp {0%{transform:translateY(0) scale(0.8);opacity:0}10%{opacity:1}100%{transform:translateY(-500px) scale(1.7);opacity:0}}
+.smoke{background: radial-gradient(circle, rgba(255,182,193,0.1) 0%, rgba(255,182,193,0) 80%); border-radius:50%; opacity:0.2;}
+.star{width:3px;height:3px;background:#fff;border-radius:50%;opacity:0.5;}
+@media (max-width:520px){
+  .card{padding:20px}
+  .text{font-size:14px}
+  #loveFinalBtn{font-size:22px;padding:10px 20px}
+  #playButton{font-size:28px;padding:12px 25px}
+  #playNote{font-size:16px}
+  .final-message{font-size:36px;}
+}
+</style>
 </head>
 <body>
 
-  <div id="playContainer">
-    <button id="playButton">▶️ BAS</button>
-    <p id="playNote">Müziği başlatmak için bas</p>
+<div id="playContainer">
+  <button id="playButton">▶️ BAS</button>
+  <p id="playNote">Müziği başlatmak için bas</p>
+</div>
+
+<div class="card" role="article" aria-label="Aşk yazısı">
+  <div class="text" id="text">
+    <p>İlk tanıştığımız andan beri kalbimde bir fırtına koptu — seninle geçen her saniye, adeta bir mucize. Gözlerin gökyüzündeki en parlak yıldız gibi, beni her baktığımda büyülüyor. 08 Ağustos 2025’te “biz” dediğimiz an, hayatımın en güzel dönüm noktası oldu.</p>
+    <p>Bazen ufak tartışmalar yaşadık, ama her seferinde aşkımızın gücünü fark ettik. Her kavga, bizi birbirimize daha çok bağladı; hatalar, öğrenmemize vesile oldu. Seninle her an, bir şiir, bir masal, bir efsane gibi.</p>
+    <p>Seninle yürümek, konuşmak, hatta sessizce yan yana oturmak bile bana tarifsiz bir huzur veriyor. Elini tuttuğumda dünya duruyor, kalbim sadece senin için atıyor. Sen yanımdayken her şey daha parlak, her an daha değerli.</p>
+    <p>Mervem, sen hayatımın ışığı, kalbimin ritmi, ruhumun melodisisin. Seninle geçen her saniye bir ömür boyu hatırlamak isteyeceğim kadar özel. İyi ki varsın, iyi ki “biz” var… Ve her şey seninle daha anlamlı, daha güzel, daha mucizevi.</p>
   </div>
+  <button id="loveFinalBtn">❤️ BAS ❤️</button>
+</div>
 
-  <div class="card" role="article" aria-label="Aşk yazısı">
-    <div class="text" id="text">
-      <p>İlk tanıştığımız andan beri içimde bir şey değişti — seninle geçen her saniye, küçük bir mucize gibiydi. 08 Ağustos 2025'te "biz" dediğimiz o an, dünyam daha parlak, daha cesur oldu.</p>
-      <p>Bazen ufak kavga ettik, 1-2 kere birbirimize kızdık; ama her seferinde aynı şeyi anladık: onlar da bizim hikâyemizin bir parçası. Tartışmalarımız bizi uzaklaştırmak yerine daha yakınlaştırdı, hatalarımız bizi öğrenmeye zorladı.</p>
-      <p>Seninle yürüdüğüm sokaklar daha sıcak, konuştuğumuz en basit şeyler bile özel. Gözlerin bana ev gibi geliyor; güveniyorum sana, güldüğünde dünyamın en güzel sesi oluyor. Elini tuttuğumda her şey yoluna giriyor; seninle hayal kurmak, plan yapmak, hatta susmak bile huzur veriyor.</p>
-      <p>Ben hatırlıyorum: zor anlarımızda bile birbirimize verdiğimiz küçük sözleri, içten gelen o samimi bakışı. Bir ilişki yalnızca güzel günlerden değil, zorluklardan da örülür — biz de öyle ördük. O anlarda seni daha çok sevdim; çünkü sen sabırlı, mert ve gerçek bir insansın.</p>
-      <p>Mervem, sen yanımdayken kendimi eksiksiz hissediyorum. Hem en çılgın planlarımda hem de en sessiz anlarımda sen varsın. İyi ki varsın, iyi ki birlikteyiz. Gelecek ne getirirse getirsin, yanında elimi tutacağım; çünkü artık seninle bir yol çizdik ve o yol bana aitmiş gibi geliyor.</p>
-    </div>
-    <button id="loveFinalBtn">❤️ BAS ❤️</button>
-  </div>
+<div class="hearts" id="hearts"></div>
+<div class="smoke" id="smoke"></div>
 
-  <div class="fireworks" id="fireworks"></div>
+<iframe id="bgMusic" width="0" height="0" src="https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=0&loop=1&playlist=tqw2NEmwYLI" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 
-  <iframe id="bgMusic" width="0" height="0" src="https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=0&loop=1&playlist=tqw2NEmwYLI" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<script>
+const playButton = document.getElementById('playButton');
+const bgMusic = document.getElementById('bgMusic');
+playButton.addEventListener('click', ()=>{
+  bgMusic.src = 'https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=1&loop=1&playlist=tqw2NEmwYLI';
+  playButton.style.display = 'none';
+});
 
-  <script>
-    const playButton = document.getElementById('playButton');
-    const bgMusic = document.getElementById('bgMusic');
-    playButton.addEventListener('click', ()=>{
-      bgMusic.src = 'https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=1&loop=1&playlist=tqw2NEmwYLI';
-      playButton.style.display = 'none';
-    });
+const heartsContainer = document.getElementById('hearts');
+function spawnHeart(){
+  const h = document.createElement('div');
+  h.className='heart';
+  h.style.left = Math.random()*100 + '%';
+  const dur = (6 + Math.random()*4).toFixed(2);
+  h.style.bottom = '-36px';
+  h.innerHTML = '<i></i>';
+  const colors = ['#ff6b9a','#ff87c0','#ff4c7a','#ffb6c1','#ffd700'];
+  h.querySelector('i').style.background = colors[Math.floor(Math.random()*colors.length)];
+  h.style.animation = `floatUp ${dur}s ease-out forwards`;
+  heartsContainer.appendChild(h);
+  setTimeout(()=> heartsContainer.removeChild(h), (dur*1000)+1000);
+}
+setInterval(spawnHeart, 500);
 
-    const heartsContainer = document.createElement('div');
-    heartsContainer.className='hearts';
-    document.body.appendChild(heartsContainer);
+// Duman efekti
+function spawnSmoke(){
+  const s = document.createElement('div');
+  s.className='smoke';
+  s.style.width = s.style.height = (80 + Math.random()*120)+'px';
+  s.style.left = Math.random()*100+'%';
+  s.style.bottom = '-100px';
+  document.body.appendChild(s);
+  const dur = 6 + Math.random()*4;
+  s.animate([{transform:'translateY(0px)', opacity:0.2},{transform:`translateY(-600px)`, opacity:0}], {duration:dur*1000, easing:'ease-out'});
+  setTimeout(()=>document.body.removeChild(s), dur*1000);
+}
+setInterval(spawnSmoke, 1500);
 
-    function spawnHeart(){
-      const h = document.createElement('div');
-      h.className='heart';
-      h.style.left = Math.random()*100 + '%';
-      const dur = (5 + Math.random()*3).toFixed(2);
-      h.style.bottom = '-36px';
-      h.innerHTML = '<i></i>';
+// Yıldızlar
+const starCount = 60;
+for(let i=0;i<starCount;i++){
+  const star = document.createElement('div');
+  star.className='star';
+  star.style.left = Math.random()*100+'%';
+  star.style.top = Math.random()*100+'%';
+  star.style.opacity = 0.3 + Math.random()*0.7;
+  star.style.width = star.style.height = 1+Math.random()*3+'px';
+  document.body.appendChild(star);
+}
 
-      // Random renk
-      const colors = ['#ff6b9a','#ff4c7a','#ff99cc','#ff3366'];
-      const color = colors[Math.floor(Math.random()*colors.length)];
-      h.querySelectorAll('*').forEach(el => el.style.background = color);
+const loveBtn = document.getElementById('loveFinalBtn');
+const textDiv = document.getElementById('text');
+const finalMsg = document.createElement('div');
+finalMsg.className='final-message';
+document.body.appendChild(finalMsg);
 
-      h.style.animation = `floatUp ${dur}s linear forwards`;
-      heartsContainer.appendChild(h);
-      setTimeout(()=> heartsContainer.removeChild(h), (dur*1000)+1000);
+function typeWriter(text, element, speed=100) {
+  let i=0;
+  element.textContent="";
+  function typing(){
+    if(i<text.length){
+      element.textContent+=text.charAt(i);
+      element.style.textShadow = `0 0 ${5 + Math.random()*25}px #ff6b9a, 0 0 ${10 + Math.random()*30}px #ff87c0, 0 0 ${15 + Math.random()*35}px #ffd700`;
+      i++;
+      setTimeout(typing, speed);
     }
-    setInterval(spawnHeart, 1200);
+  }
+  typing();
+}
 
-    const loveBtn = document.getElementById('loveFinalBtn');
-    const textDiv = document.getElementById('text');
-    const finalMsg = document.createElement('div');
-    finalMsg.className='final-message';
-    document.body.appendChild(finalMsg);
+function fireworks(){
+  for(let i=0;i<18;i++){
+    const h = document.createElement('div');
+    h.className='heart';
+    h.style.width = h.style.height = (20 + Math.random()*60)+'px';
+    h.style.left = (Math.random()*100)+'%';
+    h.style.bottom='30px';
+    h.style.opacity=1;
+    h.innerHTML='<i></i>';
+    const dur = 2 + Math.random()*2;
+    h.style.transition = `all ${dur}s ease-out`;
+    h.querySelector('i').style.background = ['#ff6b9a','#ff87c0','#ff4c7a','#ffb6c1','#ffd700'][Math.floor(Math.random()*5)];
+    document.body.appendChild(h);
+    const x=(Math.random()-0.5)*300;
+    const y=(Math.random()*-600);
+    setTimeout(()=>{ h.style.transform=`translate(${x}px, ${y}px) scale(1)`; h.style.opacity=0; },50);
+    setTimeout(()=>document.body.removeChild(h), dur*1000);
+  }
+}
 
-    function fireworks(){
-      for(let i=0;i<10;i++){
-        const h = document.createElement('div');
-        h.className='heart';
-        h.style.width = h.style.height = (30 + Math.random()*40)+'px';
-        h.style.left = (50 + (Math.random()-0.5)*60)+'%';
-        h.style.bottom='0px';
-        h.style.opacity=1;
-        h.innerHTML='<i></i>';
-        const dur = 1.5 + Math.random()*1.5;
-        h.style.transition = `all ${dur}s ease-out`;
-        document.body.appendChild(h);
-        setTimeout(()=>{ h.style.transform='translateY(-400px) scale(2)'; h.style.opacity=0; },50);
-        setTimeout(()=>document.body.removeChild(h), dur*1000);
-      }
-    }
-
-    // Yanlardan havai fişek
-    function sideFirework(side){
-      const count = 20;
-      for(let i=0; i<count; i++){
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.background = ['#ff4c7a','#ff6b9a','#ff99cc','#ffd1dc'][Math.floor(Math.random()*4)];
-        p.style.bottom = (100 + Math.random()*200) + 'px';
-        p.style[side] = '20px';
-
-        document.body.appendChild(p);
-
-        const angle = (Math.PI*2/count) * i;
-        const dist = 80 + Math.random()*50;
-        const x = Math.cos(angle) * dist;
-        const y = Math.sin(angle) * dist;
-
-        p.style.transition = "all 1.5s ease-out";
-        setTimeout(()=>{
-          p.style.transform = `translate(${x}px, ${y}px)`;
-          p.style.opacity = 1;
-        }, 50);
-
-        setTimeout(()=>{
-          p.style.opacity = 0;
-          document.body.removeChild(p);
-        }, 1600);
-      }
-    }
-
-    loveBtn.addEventListener('click', ()=>{
-      textDiv.style.display='none';
-      loveBtn.style.display='none';
-      finalMsg.innerHTML = '<span class="typing">Seni Seviyorum, Mervem 💖</span>';
-      finalMsg.style.display='block';
-      setInterval(fireworks, 500);
-
-      // Yanlarda da patlasın
-      setInterval(()=> sideFirework('left'), 2500);
-      setInterval(()=> sideFirework('right'), 2500);
-
-      // 5 saniye sonra ekstra mesaj
-      setTimeout(()=>{
-        const foreverMsg = document.createElement('div');
-        foreverMsg.className = 'forever-message';
-        foreverMsg.textContent = 'Sonsuza kadar seninle ❤️';
-        document.body.appendChild(foreverMsg);
-        foreverMsg.style.display='block';
-      }, 5000);
-    });
-  </script>
+loveBtn.addEventListener('click', ()=>{
+  textDiv.style.display='none';
+  loveBtn.style.display='none';
+  finalMsg.style.display='block';
+  typeWriter("Seni Seviyorum, Mervem 💖✨", finalMsg, 80);
+  setInterval(fireworks, 800);
+});
+</script>
 </body>
 </html>
