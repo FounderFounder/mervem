@@ -9,7 +9,7 @@
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden}
 
-    .card{width:min(900px,95%);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:36px 40px;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);margin-top:20px}
+    .card{width:min(100%,95%);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:36px 40px;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);margin-top:20px}
 
     h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text-align:center}
     .subtitle{color:rgba(243,244,248,0.8);margin-bottom:18px; text-align:center}
@@ -34,7 +34,14 @@
 
     @keyframes floatUp {0%{transform:translateY(0) scale(0.8);opacity:0}10%{opacity:1}100%{transform:translateY(-400px) scale(1.5);opacity:0}}
 
-    @media (max-width:520px){.card{padding:20px} .text{font-size:16px} #loveFinalBtn{font-size:22px;padding:10px 20px}}
+    @media (max-width:520px){
+      .card{padding:20px}
+      .text{font-size:14px}
+      h1{font-size:22px}
+      #loveFinalBtn{font-size:22px;padding:10px 20px}
+      #playButton{font-size:28px;padding:12px 25px}
+      #playNote{font-size:16px}
+    }
   </style>
 </head>
 <body>
@@ -61,7 +68,6 @@
   <iframe id="bgMusic" width="0" height="0" src="https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=0&loop=1&playlist=tqw2NEmwYLI" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 
   <script>
-    // Play music button
     const playButton = document.getElementById('playButton');
     const bgMusic = document.getElementById('bgMusic');
     playButton.addEventListener('click', ()=>{
@@ -69,7 +75,6 @@
       playButton.style.display = 'none';
     });
 
-    // Floating hearts (before final)
     const heartsContainer = document.createElement('div');
     heartsContainer.className='hearts';
     document.body.appendChild(heartsContainer);
@@ -86,7 +91,6 @@
     }
     setInterval(spawnHeart, 1200);
 
-    // Final love button
     const loveBtn = document.getElementById('loveFinalBtn');
     const textDiv = document.getElementById('text');
     const finalMsg = document.createElement('div');
