@@ -16,8 +16,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* ortalamayı kaldırdık */
-      overflow: auto; /* scroll açıldı */
+      justify-content: flex-start;
+      overflow: auto;
       padding: 20px 0;
     }
 
@@ -28,7 +28,7 @@
       border-radius: 18px;
       padding: 36px 20px;
       position: relative;
-      overflow: visible; /* taşan kalpler için */
+      overflow: visible;
       box-shadow: 0 10px 40px rgba(2,6,23,0.6);
       border: 1px solid rgba(255,255,255,0.03);
       margin-top: 20px;
@@ -65,6 +65,56 @@
       #playButton{font-size:28px;padding:12px 25px}
       #playNote{font-size:16px}
     }
+
+    /* --- EKLEMELER --- */
+
+    /* Arka plan yıldızlı efekt */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 70%),
+                  radial-gradient(circle at bottom, rgba(255,255,255,0.03), transparent 70%);
+      background-size: 200% 200%;
+      animation: bgMove 20s infinite alternate;
+      z-index: -1;
+    }
+    @keyframes bgMove {
+      from { background-position: 0 0; }
+      to { background-position: 100% 100%; }
+    }
+
+    /* Typing animasyonu */
+    .typing {
+      display: inline-block;
+      border-right: 3px solid var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 4s steps(40, end), blink .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: var(--accent) }
+    }
+
+    /* Sonsuza kadar mesajı */
+    .forever-message {
+      font-size: 36px;
+      font-weight: bold;
+      color: #ff99cc;
+      text-align: center;
+      display: none;
+      margin-top: 20px;
+      animation: popIn 1s ease forwards;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -100,6 +150,7 @@
     const heartsContainer = document.createElement('div');
     heartsContainer.className='hearts';
     document.body.appendChild(heartsContainer);
+
     function spawnHeart(){
       const h = document.createElement('div');
       h.className='heart';
@@ -107,6 +158,12 @@
       const dur = (5 + Math.random()*3).toFixed(2);
       h.style.bottom = '-36px';
       h.innerHTML = '<i></i>';
+
+      // Random renk
+      const colors = ['#ff6b9a','#ff4c7a','#ff99cc','#ff3366'];
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      h.querySelectorAll('*').forEach(el => el.style.background = color);
+
       h.style.animation = `floatUp ${dur}s linear forwards`;
       heartsContainer.appendChild(h);
       setTimeout(()=> heartsContainer.removeChild(h), (dur*1000)+1000);
@@ -117,7 +174,6 @@
     const textDiv = document.getElementById('text');
     const finalMsg = document.createElement('div');
     finalMsg.className='final-message';
-    finalMsg.textContent='Seni Seviyorum, Mervem 💖';
     document.body.appendChild(finalMsg);
 
     function fireworks(){
@@ -140,8 +196,18 @@
     loveBtn.addEventListener('click', ()=>{
       textDiv.style.display='none';
       loveBtn.style.display='none';
+      finalMsg.innerHTML = '<span class="typing">Seni Seviyorum, Mervem 💖</span>';
       finalMsg.style.display='block';
       setInterval(fireworks, 500);
+
+      // 5 saniye sonra ekstra mesaj
+      setTimeout(()=>{
+        const foreverMsg = document.createElement('div');
+        foreverMsg.className = 'forever-message';
+        foreverMsg.textContent = 'Sonsuza kadar seninle ❤️';
+        document.body.appendChild(foreverMsg);
+        foreverMsg.style.display='block';
+      }, 5000);
     });
   </script>
 </body>
