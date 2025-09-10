@@ -21,35 +21,19 @@
       padding: 20px 0;
     }
 
-    /* Arka plan loş yıldızlar */
+    /* Yıldızlı arka plan */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: #0f1226;
-      z-index: -2;
-    }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: transparent;
+      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      opacity: 0.15;
+      animation: twinkle 6s infinite alternate;
       z-index: -1;
-      pointer-events: none;
-      background-image: 
-        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1.5px 1.5px at 70% 80%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(2px 2px at 50% 60%, rgba(255,255,255,0.5), transparent),
-        radial-gradient(1px 1px at 85% 20%, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1.5px 1.5px at 40% 10%, rgba(255,255,255,0.35), transparent),
-        radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.25), transparent),
-        radial-gradient(2px 2px at 60% 45%, rgba(255,255,255,0.3), transparent);
-      animation: twinkle 8s infinite alternate;
     }
     @keyframes twinkle {
-      0%   { opacity: 0.6; }
-      50%  { opacity: 1; }
-      100% { opacity: 0.6; }
+      0% { opacity: 0.08; }
+      100% { opacity: 0.2; }
     }
 
     .card {
@@ -70,7 +54,12 @@
 
     .text{line-height:1.7;font-size:18px;color:rgba(243,244,248,0.95); text-align:center}
     .text p{margin:0 0 14px}
-    .final-message{font-size:48px; color:var(--accent); font-weight:800; text-align:center; display:none; margin-top:50px}
+    .final-message{font-size:48px; color:var(--accent); font-weight:800; text-align:center; display:none; margin-top:50px; animation: popIn 1s ease forwards;}
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
     #playContainer{margin-bottom:20px; text-align:center}
     #playButton{font-size:32px; padding:15px 30px; border-radius:15px; cursor:pointer; background:var(--accent); color:white; border:none; box-shadow:0 6px 16px rgba(255,107,154,0.5)}
@@ -86,7 +75,11 @@
     .heart:after{transform:translateX(12px)}
     .heart i{position:absolute;left:0;top:6px;width:36px;height:36px;background:var(--accent);transform:rotate(45deg);border-radius:8px}
 
-    @keyframes floatUp {0%{transform:translateY(0) scale(0.8);opacity:0}10%{opacity:1}100%{transform:translateY(-400px) scale(1.5);opacity:0}}
+    @keyframes floatUp {
+      0%{transform:translateY(0) scale(0.8);opacity:0}
+      10%{opacity:1}
+      100%{transform:translateY(-400px) scale(1.5);opacity:0}
+    }
 
     @media (max-width:520px){
       .card{padding:20px}
@@ -95,48 +88,7 @@
       #loveFinalBtn{font-size:22px;padding:10px 20px}
       #playButton{font-size:28px;padding:12px 25px}
       #playNote{font-size:16px}
-    }
-
-    /* Typing animasyonu */
-    .typing {
-      display: inline-block;
-      border-right: 3px solid var(--accent);
-      white-space: nowrap;
-      overflow: hidden;
-      animation: typing 4s steps(40, end), blink .75s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink {
-      from, to { border-color: transparent }
-      50% { border-color: var(--accent) }
-    }
-
-    /* Sonsuza kadar mesajı */
-    .forever-message {
-      font-size: 36px;
-      font-weight: bold;
-      color: #ff99cc;
-      text-align: center;
-      display: none;
-      margin-top: 20px;
-      animation: popIn 1s ease forwards;
-    }
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* Havai fişek parçacıkları */
-    .particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ff4c7a;
-      opacity: 0;
+      .final-message{font-size:32px;}
     }
   </style>
 </head>
@@ -180,12 +132,6 @@
       const dur = (5 + Math.random()*3).toFixed(2);
       h.style.bottom = '-36px';
       h.innerHTML = '<i></i>';
-
-      // Random renk
-      const colors = ['#ff6b9a','#ff4c7a','#ff99cc','#ff3366'];
-      const color = colors[Math.floor(Math.random()*colors.length)];
-      h.querySelectorAll('*').forEach(el => el.style.background = color);
-
       h.style.animation = `floatUp ${dur}s linear forwards`;
       heartsContainer.appendChild(h);
       setTimeout(()=> heartsContainer.removeChild(h), (dur*1000)+1000);
@@ -196,74 +142,33 @@
     const textDiv = document.getElementById('text');
     const finalMsg = document.createElement('div');
     finalMsg.className='final-message';
+    finalMsg.textContent='Seni Seviyorum, Mervem 💖✨';
     document.body.appendChild(finalMsg);
 
     function fireworks(){
-      for(let i=0;i<10;i++){
+      for(let i=0;i<12;i++){
         const h = document.createElement('div');
         h.className='heart';
-        h.style.width = h.style.height = (30 + Math.random()*40)+'px';
-        h.style.left = (50 + (Math.random()-0.5)*60)+'%';
-        h.style.bottom='0px';
+        h.style.width = h.style.height = (20 + Math.random()*30)+'px';
+        h.style.left = (Math.random()<0.5 ? '5%' : '95%');
+        h.style.bottom='50px';
         h.style.opacity=1;
         h.innerHTML='<i></i>';
         const dur = 1.5 + Math.random()*1.5;
         h.style.transition = `all ${dur}s ease-out`;
         document.body.appendChild(h);
-        setTimeout(()=>{ h.style.transform='translateY(-400px) scale(2)'; h.style.opacity=0; },50);
+        const x = (Math.random()-0.5)*200;
+        const y = (Math.random()*-400);
+        setTimeout(()=>{ h.style.transform=`translate(${x}px, ${y}px) scale(0.8)`; h.style.opacity=0; },50);
         setTimeout(()=>document.body.removeChild(h), dur*1000);
-      }
-    }
-
-    // Yan havai fişek
-    function sideFirework(side){
-      const count = 20;
-      for(let i=0; i<count; i++){
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.background = ['#ff4c7a','#ff6b9a','#ff99cc','#ffd1dc'][Math.floor(Math.random()*4)];
-        p.style.bottom = (100 + Math.random()*200) + 'px';
-        p.style[side] = '20px';
-
-        document.body.appendChild(p);
-
-        const angle = (Math.PI*2/count) * i;
-        const dist = 80 + Math.random()*50;
-        const x = Math.cos(angle) * dist;
-        const y = Math.sin(angle) * dist;
-
-        p.style.transition = "all 1.5s ease-out";
-        setTimeout(()=>{
-          p.style.transform = `translate(${x}px, ${y}px)`;
-          p.style.opacity = 1;
-        }, 50);
-
-        setTimeout(()=>{
-          p.style.opacity = 0;
-          document.body.removeChild(p);
-        }, 1600);
       }
     }
 
     loveBtn.addEventListener('click', ()=>{
       textDiv.style.display='none';
       loveBtn.style.display='none';
-      finalMsg.innerHTML = '<span class="typing">Seni Seviyorum, Mervem 💖</span>';
       finalMsg.style.display='block';
-      setInterval(fireworks, 500);
-
-      // Yanlarda da patlasın
-      setInterval(()=> sideFirework('left'), 2500);
-      setInterval(()=> sideFirework('right'), 2500);
-
-      // 5 saniye sonra mesaj
-      setTimeout(()=>{
-        const foreverMsg = document.createElement('div');
-        foreverMsg.className = 'forever-message';
-        foreverMsg.textContent = 'Sonsuza kadar seninle ❤️';
-        document.body.appendChild(foreverMsg);
-        foreverMsg.style.display='block';
-      }, 5000);
+      setInterval(fireworks, 1200);
     });
   </script>
 </body>
