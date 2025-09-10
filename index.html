@@ -54,11 +54,14 @@
 
     .text{line-height:1.7;font-size:18px;color:rgba(243,244,248,0.95); text-align:center}
     .text p{margin:0 0 14px}
-    .final-message{font-size:48px; color:var(--accent); font-weight:800; text-align:center; display:none; margin-top:50px; animation: popIn 1s ease forwards;}
-
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    .final-message{
+      font-size:48px;
+      color:var(--accent);
+      font-weight:800;
+      text-align:center;
+      display:none;
+      margin-top:50px;
+      white-space:pre-wrap;
     }
 
     #playContainer{margin-bottom:20px; text-align:center}
@@ -106,6 +109,7 @@
       <p>Seninle yürüdüğüm sokaklar daha sıcak, konuştuğumuz en basit şeyler bile özel. Gözlerin bana ev gibi geliyor; güveniyorum sana, güldüğünde dünyamın en güzel sesi oluyor. Elini tuttuğumda her şey yoluna giriyor; seninle hayal kurmak, plan yapmak, hatta susmak bile huzur veriyor.</p>
       <p>Ben hatırlıyorum: zor anlarımızda bile birbirimize verdiğimiz küçük sözleri, içten gelen o samimi bakışı. Bir ilişki yalnızca güzel günlerden değil, zorluklardan da örülür — biz de öyle ördük. O anlarda seni daha çok sevdim; çünkü sen sabırlı, mert ve gerçek bir insansın.</p>
       <p>Mervem, sen yanımdayken kendimi eksiksiz hissediyorum. Hem en çılgın planlarımda hem de en sessiz anlarımda sen varsın. İyi ki varsın, iyi ki birlikteyiz. Gelecek ne getirirse getirsin, yanında elimi tutacağım; çünkü artık seninle bir yol çizdik ve o yol bana aitmiş gibi geliyor.</p>
+      <p>Seninle birlikte geçirdiğim her an, bir ömür boyu hatırlamak isteyeceğim kadar değerli. Gülüşün kalbimi eritiyor, sesin ruhumu sarıyor. Seninle konuşmak, hayal kurmak, bazen sessizce yan yana oturmak bile bana tarifsiz bir huzur veriyor. Her gün seni daha çok seviyorum, her gün sana minnettar hissediyorum. İyi ki hayatımda varsın ve iyi ki seninle bir "biz" var.</p>
     </div>
     <button id="loveFinalBtn">❤️ BAS ❤️</button>
   </div>
@@ -142,8 +146,20 @@
     const textDiv = document.getElementById('text');
     const finalMsg = document.createElement('div');
     finalMsg.className='final-message';
-    finalMsg.textContent='Seni Seviyorum, Mervem 💖✨';
     document.body.appendChild(finalMsg);
+
+    function typeWriter(text, element, speed=100) {
+      let i = 0;
+      element.textContent = "";
+      function typing(){
+        if(i < text.length){
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(typing, speed);
+        }
+      }
+      typing();
+    }
 
     function fireworks(){
       for(let i=0;i<12;i++){
@@ -168,6 +184,7 @@
       textDiv.style.display='none';
       loveBtn.style.display='none';
       finalMsg.style.display='block';
+      typeWriter("Seni Seviyorum, Mervem 💖✨", finalMsg, 120);
       setInterval(fireworks, 1200);
     });
   </script>
