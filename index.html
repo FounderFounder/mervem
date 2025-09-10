@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Seni Seviyorum Mervem</title>
 <style>
 :root{--bg:#0f1226;--accent:#ff6b9a;--text:#f3f4f8}
@@ -13,11 +13,8 @@ html, body {
   font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   background: var(--bg);
   color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto; /* mobil scroll açıldı */
   padding: 20px 0;
   position: relative;
 }
@@ -41,7 +38,7 @@ body::before {
   overflow: visible;
   box-shadow: 0 10px 40px rgba(2,6,23,0.6);
   border: 1px solid rgba(255,255,255,0.03);
-  margin-top: 20px;
+  margin: 20px auto;
   z-index:1;
 }
 h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text-align:center}
@@ -59,14 +56,13 @@ h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text
   z-index:2;
   text-shadow:0 0 10px #ff6b9a,0 0 20px #ff87c0,0 0 30px #ffd700;
 }
-@keyframes glow {0% {text-shadow:0 0 5px #ff6b9a,0 0 10px #ff6b9a,0 0 15px #ff6b9a;} 100% {text-shadow:0 0 20px #ff6b9a,0 0 35px #ff87c0,0 0 50px #ffd700;}}
 #playContainer{margin-bottom:20px; text-align:center; z-index:1;}
 #playButton{font-size:32px; padding:15px 30px; border-radius:15px; cursor:pointer; background:var(--accent); color:white; border:none; box-shadow:0 6px 16px rgba(255,107,154,0.5)}
 #playNote{margin-top:10px; font-size:18px; color:#ccc}
 #loveFinalBtn{font-size:28px; padding:12px 28px; border-radius:12px; cursor:pointer; background:#ff4c7a; color:white; border:none; box-shadow:0 6px 16px rgba(255,76,122,0.5); margin-top:20px}
-.hearts, .fireworks, .smoke, .star {position:absolute; inset:0; pointer-events:none; z-index:0;}
+.hearts, .fireworks, .smoke, .star {position:fixed; inset:0; pointer-events:none; z-index:0;}
 
-/* Kalpler PC ve mobil uyumlu tam kalp şeklinde */
+/* Kalpler tam kalp şeklinde */
 .heart {
   position: absolute;
   width: 30px;
