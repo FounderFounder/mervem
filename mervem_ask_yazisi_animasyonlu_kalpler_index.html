@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Seni Seviyorum Mervem</title>
+  <style>
+    :root{--bg:#0f1226;--accent:#ff6b9a;--text:#f3f4f8}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden}
+
+    .card{width:min(900px,95%);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:36px 40px;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);margin-top:20px}
+
+    h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text-align:center}
+    .subtitle{color:rgba(243,244,248,0.8);margin-bottom:18px; text-align:center}
+
+    .text{line-height:1.7;font-size:18px;color:rgba(243,244,248,0.95); text-align:center}
+    .text p{margin:0 0 14px}
+    .final-message{font-size:48px; color:var(--accent); font-weight:800; text-align:center; display:none; margin-top:50px}
+
+    #playContainer{margin-bottom:20px; text-align:center}
+    #playButton{font-size:32px; padding:15px 30px; border-radius:15px; cursor:pointer; background:var(--accent); color:white; border:none; box-shadow:0 6px 16px rgba(255,107,154,0.5)}
+    #playNote{margin-top:10px; font-size:18px; color:#ccc}
+
+    #loveFinalBtn{font-size:28px; padding:12px 28px; border-radius:12px; cursor:pointer; background:#ff4c7a; color:white; border:none; box-shadow:0 6px 16px rgba(255,76,122,0.5); margin-top:20px}
+
+    .hearts, .fireworks{position:absolute; inset:0; pointer-events:none}
+
+    .heart{position:absolute;width:36px;height:36px;transform-origin:center center; opacity:0;}
+    .heart:before,.heart:after{content:'';position:absolute;width:36px;height:36px;border-radius:18px;background:var(--accent);}
+    .heart:before{transform:translateX(-12px);}
+    .heart:after{transform:translateX(12px)}
+    .heart i{position:absolute;left:0;top:6px;width:36px;height:36px;background:var(--accent);transform:rotate(45deg);border-radius:8px}
+
+    @keyframes floatUp {0%{transform:translateY(0) scale(0.8);opacity:0}10%{opacity:1}100%{transform:translateY(-400px) scale(1.5);opacity:0}}
+
+    @media (max-width:520px){.card{padding:20px} .text{font-size:16px} #loveFinalBtn{font-size:22px;padding:10px 20px}}
+  </style>
+</head>
+<body>
+
+  <div id="playContainer">
+    <button id="playButton">▶️ BAS</button>
+    <p id="playNote">Müziği başlatmak için bas</p>
+  </div>
+
+  <div class="card" role="article" aria-label="Aşk yazısı">
+    <div class="text" id="text">
+      <p>İlk tanıştığımız andan beri içimde bir şey değişti — seninle geçen her saniye, küçük bir mucize gibiydi. 08 Ağustos 2025'te "biz" dediğimiz o an, dünyam daha parlak, daha cesur oldu.</p>
+      <p>Bazen ufak kavga ettik, 1-2 kere birbirimize kızdık; ama her seferinde aynı şeyi anladık: onlar da bizim hikâyemizin bir parçası. Tartışmalarımız bizi uzaklaştırmak yerine daha yakınlaştırdı, hatalarımız bizi öğrenmeye zorladı.</p>
+      <p>Seninle yürüdüğüm sokaklar daha sıcak, konuştuğumuz en basit şeyler bile özel. Gözlerin bana ev gibi geliyor; güveniyorum sana, güldüğünde dünyamın en güzel sesi oluyor. Elini tuttuğumda her şey yoluna giriyor; seninle hayal kurmak, plan yapmak, hatta susmak bile huzur veriyor.</p>
+      <p>Ben hatırlıyorum: zor anlarımızda bile birbirimize verdiğimiz küçük sözleri, içten gelen o samimi bakışı. Bir ilişki yalnızca güzel günlerden değil, zorluklardan da örülür — biz de öyle ördük. O anlarda seni daha çok sevdim; çünkü sen sabırlı, mert ve gerçek bir insansın.</p>
+      <p>Mervem, sen yanımdayken kendimi eksiksiz hissediyorum. Hem en çılgın planlarımda hem de en sessiz anlarımda sen varsın. İyi ki varsın, iyi ki birlikteyiz. Gelecek ne getirirse getirsin, yanında elimi tutacağım; çünkü artık seninle bir yol çizdik ve o yol bana aitmiş gibi geliyor.</p>
+    </div>
+    <button id="loveFinalBtn">❤️ BAS ❤️</button>
+  </div>
+
+  <div class="fireworks" id="fireworks"></div>
+
+  <!-- YouTube embed gizli -->
+  <iframe id="bgMusic" width="0" height="0" src="https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=0&loop=1&playlist=tqw2NEmwYLI" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+
+  <script>
+    // Play music button
+    const playButton = document.getElementById('playButton');
+    const bgMusic = document.getElementById('bgMusic');
+    playButton.addEventListener('click', ()=>{
+      bgMusic.src = 'https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=1&loop=1&playlist=tqw2NEmwYLI';
+      playButton.style.display = 'none';
+    });
+
+    // Floating hearts (before final)
+    const heartsContainer = document.createElement('div');
+    heartsContainer.className='hearts';
+    document.body.appendChild(heartsContainer);
+    function spawnHeart(){
+      const h = document.createElement('div');
+      h.className='heart';
+      h.style.left = Math.random()*100 + '%';
+      const dur = (5 + Math.random()*3).toFixed(2);
+      h.style.bottom = '-36px';
+      h.innerHTML = '<i></i>';
+      h.style.animation = `floatUp ${dur}s linear forwards`;
+      heartsContainer.appendChild(h);
+      setTimeout(()=> heartsContainer.removeChild(h), (dur*1000)+1000);
+    }
+    setInterval(spawnHeart, 1200);
+
+    // Final love button
+    const loveBtn = document.getElementById('loveFinalBtn');
+    const textDiv = document.getElementById('text');
+    const finalMsg = document.createElement('div');
+    finalMsg.className='final-message';
+    finalMsg.textContent='Seni Seviyorum, Mervem 💖';
+    document.body.appendChild(finalMsg);
+
+    function fireworks(){
+      for(let i=0;i<10;i++){
+        const h = document.createElement('div');
+        h.className='heart';
+        h.style.width = h.style.height = (30 + Math.random()*40)+'px';
+        h.style.left = (50 + (Math.random()-0.5)*60)+'%';
+        h.style.bottom='0px';
+        h.style.opacity=1;
+        h.innerHTML='<i></i>';
+        const dur = 1.5 + Math.random()*1.5;
+        h.style.transition = `all ${dur}s ease-out`;
+        document.body.appendChild(h);
+        setTimeout(()=>{ h.style.transform='translateY(-400px) scale(2)'; h.style.opacity=0; },50);
+        setTimeout(()=>document.body.removeChild(h), dur*1000);
+      }
+    }
+
+    loveBtn.addEventListener('click', ()=>{
+      textDiv.style.display='none';
+      loveBtn.style.display='none';
+      finalMsg.style.display='block';
+      setInterval(fireworks, 500);
+    });
+  </script>
+</body>
+</html>
