@@ -1,180 +1,355 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sürpriz</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top, #0d1b2a, #000);
-      color: white;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      overflow-x: hidden;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seni Seviyorum Mervem</title>
+<style>
+:root{
+  --bg:#0f1226;
+  --accent:#ff6b9a;
+  --text:#f3f4f8;
+}
+*{box-sizing:border-box}
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  overflow-y: auto; /* sayfa kaydırılabilir */
+  padding: 20px 0;
+  -webkit-font-smoothing:antialiased;
+}
 
-    .message {
-      font-size: 1.6em;
-      margin: 20px;
-      opacity: 0;
-      animation: fadeIn 2s forwards;
-    }
+body::before {
+  content:"";
+  position: fixed;
+  inset:0;
+  background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+  opacity:0.15;
+  animation: twinkle 8s infinite alternate;
+  z-index: -3;
+}
+@keyframes twinkle {0% {opacity:0.08;} 100% {opacity:0.25;}}
 
-    .glow-text {
-      text-shadow: 0 0 10px #ff4b5c, 0 0 20px #ff4b5c, 0 0 30px #ff4b5c;
-    }
+.card {
+  width: min(100%, 95%);
+  max-width: 900px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 18px;
+  padding: 36px 20px;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+  margin: 20px auto;
+  z-index:1;
+}
 
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
+h1{font-size:28px;letter-spacing:0.2px;margin:0 0 12px;color:var(--accent); text-align:center}
+.text{line-height:1.7;font-size:18px;color:rgba(243,244,248,0.95); text-align:center}
+.text p{margin:0 0 14px}
 
-    /* Yazı efektleri */
-    #finalMessage {
-      font-size: 2em;
-      margin-top: 30px;
-      white-space: pre-line;
-    }
+.final-message{
+  font-size:48px;
+  color:var(--accent);
+  font-weight:800;
+  text-align:center;
+  display:none;
+  margin-top:50px;
+  white-space:pre-wrap;
+  position: relative;
+  z-index:2;
+  text-shadow:0 0 10px #ff6b9a,0 0 20px #ff87c0,0 0 30px #ffd700;
+}
 
-    /* Buton */
-    .photo-btn {
-      margin-top: 20px;
-      padding: 12px 20px;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(45deg, #ff4b2b, #ff416c);
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+/* overlay efekt container'ları fixed, böylece kaydırmayla bozulmaz */
+.hearts, .smoke, .stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index:0;
+}
 
-    .photo-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px #ff416c;
-    }
+/* Kalp: PC ve mobilde tam kalp şekli (boyuta göre uyumlu) */
+.heart {
+  position: absolute;
+  width: 36px;   /* default, JS ile dinamik değişir */
+  height: 36px;
+  background: var(--accent);
+  transform: rotate(-45deg);
+  opacity: 0;
+  border-radius: 6px;
+  will-change: transform, opacity, top, left;
+}
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: inherit; /* inline renkleri devralır */
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+}
+.heart::before { top: -50%; left: 0; }
+.heart::after  { top: 0; left: 50%; }
 
-    /* Fotoğraf kutusu */
-    .photo-container {
-      margin-top: 20px;
-      text-align: center;
-    }
+/* duman */
+.smokeBall {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,182,193,0.12) 0%, rgba(255,182,193,0) 70%);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
 
-    .photo-container img {
-      max-width: 90%;
-      height: auto;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255, 64, 108, 0.7);
-      display: none; /* başta gizli */
-    }
+/* küçük yıldızlar */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.4;
+  pointer-events: none;
+}
 
-    /* Kalpler */
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      transform: rotate(-45deg);
-      left: 50%;
-      bottom: 0;
-      animation: floatUp 4s linear infinite;
-    }
+/* foto buton ve container */
+.photo-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+  display: inline-block;
+  z-index:3;
+}
+.photo-btn:hover{ transform: scale(1.05); box-shadow: 0 0 15px rgba(255,65,108,0.6); }
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
+.photo-container {
+  margin-top: 20px;
+  text-align: center;
+  z-index:3;
+  position: relative;
+}
+.photo-container img{
+  max-width: 92%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 30px rgba(255,64,108,0.25);
+  display: none; /* başta gizli */
+}
 
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: 10px;
-      top: 0;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(-45deg) scale(1); opacity: 1; }
-      100% { transform: translateY(-600px) rotate(-45deg) scale(0.5); opacity: 0; }
-    }
-  </style>
+/* responsive */
+@media (max-width:520px){
+  .card{padding:20px}
+  .text{font-size:15px}
+  .final-message{font-size:32px;}
+  .heart{width:28px;height:28px;border-radius:5px}
+}
+</style>
 </head>
 <body>
-  <!-- Mesaj Alanı -->
-  <div id="messages"></div>
-  <div id="finalMessage" class="message glow-text"></div>
 
-  <!-- Buton -->
-  <button id="showPhotoBtn" class="photo-btn">💖 Sürprizi Gör 💖</button>
+  <!-- efekt containerları (fixed) -->
+  <div class="hearts" id="hearts"></div>
+  <div class="smoke" id="smoke"></div>
+  <div class="stars" id="stars"></div>
 
-  <!-- Fotoğraf -->
-  <div class="photo-container">
-    <img id="surprisePhoto" src="surprise.jpg" alt="Sürpriz Fotoğraf">
+  <!-- içerik -->
+  <div class="card" role="article" aria-label="Aşk yazısı">
+    <div class="text" id="text">
+      <p>İlk tanıştığımız andan beri kalbimde bir fırtına koptu — seninle geçen her saniye, adeta bir mucize. Gözlerin gökyüzündeki en parlak yıldız gibi, beni her baktığımda büyülüyor. 08 Ağustos 2025’te “biz” dediğimiz an, hayatımın en güzel dönüm noktası oldu.</p>
+      <p>Bazen ufak tartışmalar yaşadık, ama her seferinde aşkımızın gücünü fark ettik. Her kavga, bizi birbirimize daha çok bağladı; hatalar, öğrenmemize vesile oldu. Seninle her an, bir şiir, bir masal, bir efsane gibi.</p>
+      <p>Seninle yürümek, konuşmak, hatta sessizce yan yana oturmak bile bana tarifsiz bir huzur veriyor. Elini tuttuğumda dünya duruyor, kalbim sadece senin için atıyor. Sen yanımdayken her şey daha parlak, her an daha değerli.</p>
+      <p>Mervem, sen hayatımın ışığı, kalbimin ritmi, ruhumun melodisisin. Seninle geçen her saniye bir ömür boyu hatırlamak isteyeceğim kadar özel. İyi ki varsın, iyi ki “biz” var… Ve her şey seninle daha anlamlı, daha güzel, daha mucizevi.</p>
+    </div>
+
+    <button id="loveFinalBtn" class="photo-btn">❤️ BAS ❤️</button>
+
+    <!-- Final mesaj ve foto butonu + foto -->
+    <div id="finalArea" style="margin-top:18px; text-align:center;">
+      <div id="finalMessage" class="final-message" aria-live="polite"></div>
+      <div>
+        <button id="showPhotoBtn" class="photo-btn" style="display:none">💖 Sürprizi Gör 💖</button>
+      </div>
+      <div class="photo-container">
+        <!-- Doğru path: sistemdeki resim dosyasına referans -->
+        <img id="surprisePhoto" src="/mnt/data/63f2aedb-be56-4378-9363-33e78eda2249.png" alt="Sürpriz Fotoğraf">
+      </div>
+    </div>
   </div>
 
-  <script>
-    // Mesajlar
-    const messages = [
-      "Seninle geçen her an, kalbimin en güzel şarkısı oluyor...",
-      "Gözlerin gecemin en parlak yıldızı, gülüşün ise dünyamın en sıcak güneşi...",
-      "Sana her baktığımda, kalbim yeniden doğuyor.",
-      "Sonsuza kadar seninle olmak istiyorum 💖",
-      "Seni Seviyorum Mervem ❤️"
-    ];
+  <!-- opsiyonel müzik iframe (hidden) -->
+  <iframe id="bgMusic" width="0" height="0"
+    src="https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=0&loop=1&playlist=tqw2NEmwYLI"
+    frameborder="0" allow="autoplay; encrypted-media" style="display:none"></iframe>
 
-    const messagesContainer = document.getElementById("messages");
-    const finalMessage = document.getElementById("finalMessage");
-    let index = 0;
+<script>
+/* Müzik başlat butonu (loveFinalBtn) */
+const playButton = document.getElementById('loveFinalBtn');
+const bgMusic = document.getElementById('bgMusic');
+playButton.addEventListener('click', ()=> {
+  // müzik başlat (tarayıcı izin verirse)
+  bgMusic.src = 'https://www.youtube.com/embed/tqw2NEmwYLI?autoplay=1&loop=1&playlist=tqw2NEmwYLI';
+  playButton.style.display = 'none';
+  startFinalSequence();
+});
 
-    function showMessages() {
-      if (index < messages.length - 1) {
-        const msg = document.createElement("div");
-        msg.className = "message glow-text";
-        msg.textContent = messages[index];
-        messagesContainer.appendChild(msg);
-        index++;
-        setTimeout(showMessages, 2500);
-      } else {
-        typeWriter(messages[messages.length - 1], finalMessage, 0);
-      }
+/* Kalpler - tam kalp olmasını sağlayacak, boyuta göre pseudo'lar otomatik uyum sağlar */
+const heartsContainer = document.getElementById('hearts');
+
+function spawnHeart() {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  const size = Math.floor((Math.random() * 30) + 20); // 20-50
+  h.style.width = size + 'px';
+  h.style.height = size + 'px';
+
+  // renk
+  const colors = ['#ff6b9a','#ff87c0','#ff4c7a','#ffb6c1','#ffd700'];
+  const color = colors[Math.floor(Math.random()*colors.length)];
+  h.style.backgroundColor = color;
+
+  // başlangıç konumu (viewport içinde kalacak şekilde)
+  const left = Math.random() * (window.innerWidth * 0.9);
+  h.style.left = left + 'px';
+  h.style.top = (window.innerHeight + 10) + 'px'; // ekranın biraz altında başlat
+
+  // görünür yap + animasyon (CSS transform ile)
+  heartsContainer.appendChild(h);
+
+  // ufak hareket: yukarı doğru, hafif sola/sağa
+  const duration = 4500 + Math.random()*2500; // ms
+  const deltaX = (Math.random()-0.5) * 200; // sağa/sola yayılım
+  const deltaY = - (window.innerHeight + 200 + Math.random()*200);
+
+  h.animate([
+    { transform: `translate3d(0,0,0) rotate(-45deg)`, opacity: 1 },
+    { transform: `translate3d(${deltaX}px, ${deltaY}px, 0) rotate(-45deg)`, opacity: 0.0 }
+  ], {
+    duration: duration,
+    easing: 'cubic-bezier(.22,.9,.3,1)'
+  });
+
+  // temizle
+  setTimeout(()=> {
+    try { h.remove(); } catch(e){}
+  }, duration + 50);
+}
+
+/* Duman efekti (hafif, genişletilmiş ve yukarı doğru kaydırılır) */
+const smokeContainer = document.getElementById('smoke');
+function spawnSmoke() {
+  const s = document.createElement('div');
+  s.className = 'smokeBall';
+  const size = 60 + Math.random()*90;
+  s.style.width = size + 'px';
+  s.style.height = size + 'px';
+  s.style.left = (Math.random()*(window.innerWidth*0.85)) + 'px';
+  s.style.bottom = '-80px';
+  s.style.opacity = 0.12 + Math.random()*0.12;
+  smokeContainer.appendChild(s);
+
+  const dur = 5000 + Math.random()*3000;
+  s.animate([
+    { transform: 'translateY(0)', opacity: s.style.opacity },
+    { transform: `translateY(-${window.innerHeight*0.6}px)`, opacity: 0 }
+  ], { duration: dur, easing: 'ease-out' });
+
+  setTimeout(()=> { try { s.remove(); } catch(e){} }, dur + 50);
+}
+
+/* Ufak yıldızlar sabit dağılım */
+const starsContainer = document.getElementById('stars');
+(function createStars(){
+  const count = 60;
+  for(let i=0;i<count;i++){
+    const star = document.createElement('div');
+    star.className = 'star';
+    const sx = Math.random()*100;
+    const sy = Math.random()*100;
+    const size = 1 + Math.random()*3;
+    star.style.left = sx + '%';
+    star.style.top = sy + '%';
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.opacity = 0.2 + Math.random()*0.6;
+    starsContainer.appendChild(star);
+  }
+})();
+
+/* Periodik olarak efektleri başlat */
+const heartInterval = setInterval(spawnHeart, 700);
+const smokeInterval = setInterval(spawnSmoke, 1500);
+
+/* Final mesaj + foto butonu */
+const finalMessageEl = document.getElementById('finalMessage');
+const showPhotoBtn = document.getElementById('showPhotoBtn');
+const surprisePhoto = document.getElementById('surprisePhoto');
+
+function typeWriter(text, el, speed=80, cb){
+  el.style.display = 'block';
+  el.textContent = '';
+  let idx = 0;
+  function step(){
+    if(idx < text.length){
+      el.textContent += text.charAt(idx);
+      idx++;
+      setTimeout(step, speed);
+    } else {
+      if(cb) cb();
     }
+  }
+  step();
+}
 
-    // Yazı efekti (harf harf)
-    function typeWriter(text, element, i) {
-      if (i < text.length) {
-        element.textContent += text.charAt(i);
-        setTimeout(() => typeWriter(text, element, i + 1), 100);
-      }
-    }
-
-    showMessages();
-
-    // Buton - Fotoğraf gösterme
-    document.getElementById("showPhotoBtn").addEventListener("click", function() {
-      const photo = document.getElementById("surprisePhoto");
-      photo.style.display = "block";
-      this.style.display = "none";
+/* Final süreci: yazıyı göster, ardından butonu göster, ardından fireworks başlat */
+function startFinalSequence(){
+  const text = "Seni Seviyorum, Mervem 💖✨";
+  // küçük gecikme ver, daha dramatik olsun
+  setTimeout(()=> {
+    typeWriter(text, finalMessageEl, 80, ()=>{
+      // yazı bitince butonu göster
+      showPhotoBtn.style.display = 'inline-block';
+      // ayrıca sayfayı finalMessage'a kaydır
+      finalMessageEl.scrollIntoView({behavior:'smooth', block:'center'});
     });
+    // başlat biraz daha yoğun fireworks'lar
+    const fireInterval = setInterval(()=> {
+      // her döngüde birkaç kalp patlat (fireworks-like)
+      for(let k=0;k<6;k++) {
+        spawnHeart();
+      }
+    }, 900);
+    // bir süre sonra bu yoğunluğu azalt (opsiyonel)
+    setTimeout(()=> clearInterval(fireInterval), 20000);
+  }, 350);
+}
 
-    // Kalpler üretme
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (2 + Math.random() * 3) + "s";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
-    }
-    setInterval(createHeart, 500);
-  </script>
+/* Foto butonuna tıklanınca foto göster, butonu gizle ve fotoya kaydır */
+showPhotoBtn.addEventListener('click', ()=> {
+  // göster
+  surprisePhoto.style.display = 'block';
+  // butonu gizle
+  showPhotoBtn.style.display = 'none';
+  // fotoğrafın olduğu bölüme yumuşak kaydır
+  surprisePhoto.scrollIntoView({behavior:'smooth', block:'center'});
+});
+
+/* Eğer kullanıcı direkt sayfada "love" butonuna basmadan finali tetiklemek istersen
+   (ör. test) aşağıdaki satırı kullanabilirsin; şu anda final, loveFinalBtn'a basınca başlar.
+*/
+// startFinalSequence(); // (yorumdan çıkarma)
+</script>
 </body>
 </html>
